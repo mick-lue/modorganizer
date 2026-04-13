@@ -153,7 +153,7 @@ ModInfoWithConflictInfo::Conflicts ModInfoWithConflictInfo::doConflictCheck() co
       }
 
       hasVisibleFiles   = true;
-      auto alternatives = file->getAlternatives();
+      auto& alternatives = file->getAlternatives();
       if ((alternatives.size() == 0) ||
           std::find(dataIDs.begin(), dataIDs.end(), alternatives.back().originID()) !=
               dataIDs.end()) {
@@ -342,7 +342,6 @@ const std::set<int>& ModInfoWithConflictInfo::getContents() const
 
 bool ModInfoWithConflictInfo::hasContent(int content) const
 {
-  auto& contents = m_Contents.value();
-  return std::find(std::begin(contents), std::end(contents), content) !=
-         std::end(contents);
+  const auto& contents = m_Contents.value();
+  return contents.contains(content);
 }

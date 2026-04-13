@@ -9,6 +9,7 @@
 #include "shared/util.h"
 #include <log.h>
 #include <utility.h>
+#include <format>
 
 namespace env
 {
@@ -994,7 +995,7 @@ std::filesystem::path processPath(HANDLE process = INVALID_HANDLE_VALUE)
   if (process == INVALID_HANDLE_VALUE) {
     what = L"the current process";
   } else {
-    what = L"pid " + std::to_wstring(reinterpret_cast<std::uintptr_t>(process));
+    what = std::format(L"pid {}", reinterpret_cast<std::uintptr_t>(process));
   }
 
   std::wcerr << L"failed to get filename for " << what << L"\n";
@@ -1087,7 +1088,7 @@ std::wstring safeVersion()
   }
 }
 
-HandlePtr tempFile(const std::wstring& dir)
+HandlePtr tempFile(const std::wstring dir)
 {
   // maximum tries of incrementing the counter
   const int MaxTries = 100;
@@ -1132,7 +1133,7 @@ HandlePtr tempFile(const std::wstring& dir)
     }
 
     // try again with "-i"
-    path = dir + L"\\" + prefix + L"-" + std::to_wstring(i + 1) + ext;
+    path = std::format(L"{}\\{}-{}{}", dir, prefix, i + 1, ext);
   }
 
   std::wcerr << L"can't create dump file, ran out of filenames\n";
@@ -1161,7 +1162,7 @@ HandlePtr dumpFile(const wchar_t* dir)
   const auto temp = tempDir();
 
   if (!temp.empty()) {
-    h = tempFile(temp.c_str());
+    h = tempFile(temp);
     if (h.get() != INVALID_HANDLE_VALUE) {
       return h;
     }
@@ -1170,7 +1171,7 @@ HandlePtr dumpFile(const wchar_t* dir)
   return {};
 }
 
-CoreDumpTypes coreDumpTypeFromString(const std::string& s)
+CoreDumpTypes coreDumpTypeFromString(std::string_view s)
 {
   if (s == "data")
     return env::CoreDumpTypes::Data;

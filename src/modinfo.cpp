@@ -39,7 +39,6 @@ along with Mod Organizer.  If not, see <http://www.gnu.org/licenses/>.
 #include <report.h>
 #include <scriptextender.h>
 #include <unmanagedmods.h>
-#include <versioninfo.h>
 
 #include <QApplication>
 #include <QDirIterator>
@@ -65,9 +64,10 @@ bool ModInfo::ByName(const ModInfo::Ptr& LHS, const ModInfo::Ptr& RHS)
 
 bool ModInfo::isSeparatorName(const QString& name)
 {
-  static QRegularExpression separatorExp(
-      QRegularExpression::anchoredPattern(".*_separator"));
-  return separatorExp.match(name).hasMatch();
+  //static QRegularExpression separatorExp(
+  //    QRegularExpression::anchoredPattern(".*_separator"));
+  //return separatorExp.match(name).hasMatch();
+  return name.endsWith("_separator");
 }
 
 bool ModInfo::isBackupName(const QString& name)

@@ -2077,7 +2077,7 @@ void MainWindow::checkBSAList()
 void MainWindow::saveModMetas()
 {
   if (m_MetaSave.isFinished()) {
-    m_MetaSave = QtConcurrent::run([this]() {
+    m_MetaSave = QtConcurrent::run([]() {
       for (unsigned int i = 0; i < ModInfo::getNumMods(); ++i) {
         ModInfo::Ptr modInfo = ModInfo::getByIndex(i);
         modInfo->saveMeta();
